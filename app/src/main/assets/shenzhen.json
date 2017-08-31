@@ -1,14 +1,14 @@
 {
-    canvasWidth:"830",
-    canvasHeight:"650",
+    "canvasWidth":"830",
+    "canvasHeight":"650",
 
     "lines":
     [
 
         {
-            lineName:"罗宝线",
-            lineId:"A",
-            lineColor:"209344",
+            "lineName":"罗宝线",
+            "lineId":"A",
+            "lineColor":"209344",
 
             "list":
             [
@@ -348,9 +348,9 @@
 
 
         {
-            lineName:"蛇口线",
-            lineId:"B",
-            lineColor:"e57e12",
+            "lineName":"蛇口线",
+            "lineId":"B",
+            "lineColor":"e57e12",
 
             "list":
             [
@@ -679,9 +679,9 @@
 
 
         {
-            lineName:"龙岗线",
-            lineId:"C",
-            lineColor:"1e96d5",
+            "lineName":"龙岗线",
+            "lineId":"C",
+            "lineColor":"1e96d5",
 
             "list":
             [
@@ -879,7 +879,7 @@
                         "stationName": "大芬",
                         "lat": "22.61401",
                         "x": "693",
-                        "y": "151",
+                        "y": "161",
                         "textPosition": "左",
                         "textOrientation": "水平"
                     },
@@ -890,7 +890,7 @@
                         "stationName": "丹竹头",
                         "lat": "22.61982",
                         "x": "693",
-                        "y": "116",
+                        "y": "126",
                         "textPosition": "左",
                         "textOrientation": "水平"
                     },
@@ -901,7 +901,7 @@
                         "stationName": "六约",
                         "lat": "22.63422",
                         "x": "693",
-                        "y": "79",
+                        "y": "89",
                         "textPosition": "左",
                         "textOrientation": "水平"
                     },
@@ -912,9 +912,20 @@
                         "stationName": "塘坑",
                         "lat": "22.63978",
                         "x": "693",
-                        "y": "43",
+                        "y": "68",
                         "textPosition": "左",
                         "textOrientation": "水平"
+                    },
+                    {
+                      "lon": "114.19263",
+                      "crossLine": "龙岗线",
+                      "stationId": "-",
+                      "stationName": "塘坑",
+                      "lat": "22.63978",
+                      "x": "693",
+                      "y": "43",
+                      "textPosition": "左",
+                      "textOrientation": "水平"
                     },
                     {
                         "lon": "114.20894",
@@ -1021,9 +1032,9 @@
 
 
         {
-            lineName:"龙华线",
-            lineId:"D",
-            lineColor:"d71518",
+            "lineName":"龙华线",
+            "lineId":"D",
+            "lineColor":"d71518",
 
             "list":
             [
@@ -1198,9 +1209,9 @@
 
 
         {
-            lineName:"环中线",
-            lineId:"E",
-            lineColor:"6d1c7c",
+            "lineName":"环中线",
+            "lineId":"E",
+            "lineColor":"6d1c7c",
 
             "list":
             [

@@ -1,0 +1,13 @@
+*~
+.DS_Store
+BOPhotorage.xcodeproj/xcuserdata
+BOPhotorage.xcworkspace/xcuserdata
+Pods/Pods.xcodeproj/xcuserdata
+BrushupApp/Pods/Pods.xcodeproj/xcuserdata
+BrushupApp/Artemitune.xcodeproj/xcuserdata
+BrushupApp/Artemitune.xcworkspace/xcuserdata
+.gradle
+.idea
+app/build
+build
+local.properties

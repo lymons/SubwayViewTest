@@ -11,13 +11,11 @@ import android.content.Context;
 import android.graphics.*;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.csq.subwayviewtest.models.Subway;
 import com.csq.subwayviewtest.models.SubwayLine;
@@ -242,15 +240,12 @@ public class SubwayView extends View {
                 }
             }
 
+            pPath.setPathEffect(new CornerPathEffect(lineWidth-6));
+//            pPath.setStrokeJoin(Paint.Join.ROUND);
+
             pPath.setColor(line.lineColor);
             canvas.drawPath(path, pPath);
         }
-
-//        DisplayMetrics displayMetrics = new DisplayMetrics();
-//        WindowManager manager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-//        manager.getDefaultDisplay().getMetrics(displayMetrics);
-//        int height = displayMetrics.heightPixels;
-//        int width = displayMetrics.widthPixels;
 
         for(SubwayLine line : subway.getLines()){
             for(int i = 0, num = line.stations.size() ; i < num; i++){
@@ -258,8 +253,14 @@ public class SubwayView extends View {
                 getStationPoint(ss, thisPoint);
                 lastPoint.set(thisPoint.x, thisPoint.y);
 
+                // 不画屏幕以外的车站
                 if (thisPoint.x > canvas.getWidth() || thisPoint.y > canvas.getHeight() || thisPoint.x < 0 || thisPoint.y < 0) {
                     Log.w("ERR", "Skip " + thisPoint.toString());
+                    continue;
+                }
+
+                // 只画拐弯
+                if (ss.stationId.equals("-")) {
                     continue;
                 }
 
