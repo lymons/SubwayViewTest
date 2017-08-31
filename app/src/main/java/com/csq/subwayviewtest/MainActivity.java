@@ -1,7 +1,10 @@
 package com.csq.subwayviewtest;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
+
 import com.csq.subwayviewtest.models.Subway;
 import com.csq.subwayviewtest.models.SubwayStation;
 import com.csq.subwayviewtest.utils.CsqBackgroundTask;
@@ -16,7 +19,11 @@ public class MainActivity extends Activity {
     private SubwayView.StationSelectListener stationSelectListener = new SubwayView.StationSelectListener() {
         @Override
         public void selectChanged(SubwayStation station) {
+            Log.w("SubwayView", station.toString());
 
+            AlertDialog dialog = new AlertDialog.Builder(MainActivity.this).setTitle("您点击的车站信息如下：").setMessage(station.toString()).create();
+            dialog.setCancelable(true);
+            dialog.show();
         }
     };
 

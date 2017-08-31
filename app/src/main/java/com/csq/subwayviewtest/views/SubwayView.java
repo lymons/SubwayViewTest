@@ -11,10 +11,14 @@ import android.content.Context;
 import android.graphics.*;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.WindowManager;
+
 import com.csq.subwayviewtest.models.Subway;
 import com.csq.subwayviewtest.models.SubwayLine;
 import com.csq.subwayviewtest.models.SubwayStation;
@@ -24,6 +28,11 @@ import com.csq.subwayviewtest.utils.ViewUtils;
 public class SubwayView extends View {
 
     // ------------------------ Constants ------------------------
+
+    private static final int LW = PxUtil.dip2px(3);
+    private static final int LW_MAX = (int)(LW*5);
+    private static final int TS = PxUtil.dip2px(8);
+    private static final int TS_MAX = (int)(TS*2);
 
 
     // ------------------------- Fields --------------------------
@@ -70,24 +79,24 @@ public class SubwayView extends View {
     /**
      * 文字大小
      */
-    private int textSizePx = PxUtil.dip2px(12);
+    private int textSizePx = TS;
     /**
      * 线宽
      */
-    private int lineWidth = PxUtil.dip2px(5);
+    private int lineWidth = LW;
     /**
      * 文字距坐标的间隔 = 2*lineWidth
      */
-    private int textMargin1 = PxUtil.dip2px(10);
-    private int textMargin2 = PxUtil.dip2px(10);
+    private int textMargin1 = 2*LW;
+    private int textMargin2 = 2*LW;
     /**
      * 站点外环半径 = 1*lineWidth
      */
-    private int rStationOut = PxUtil.dip2px(5);
+    private int rStationOut = LW;
     /**
      * 站点内环半径 = 0.7*lineWidth
      */
-    private int rStationIn = PxUtil.dip2px(3.5f);
+    private int rStationIn = (int)(0.7*LW);
 
     private StationSelectListener stationSelectListener;
 
@@ -96,7 +105,7 @@ public class SubwayView extends View {
     /**
      * 最大缩放级别
      */
-    protected static final int MaxScale = 3;
+    protected static final int MaxScale = 5;
     /**
      * 最小缩放级别
      */
@@ -113,13 +122,13 @@ public class SubwayView extends View {
     /**
      * 当前缩放级别
      */
-    protected float curScale = 1.0f;
+    protected float curScale = 3.0f;
 
     protected GestureDetector mGestureDetector;
     protected GestureDetector.OnGestureListener mGestureListener = new GestureDetector.SimpleOnGestureListener(){
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            if(curScale <= MinScale || subway == null){
+            if(curScale < MinScale || subway == null){
                 return false;
             }
             //左下滑动distanceX > 0, distanceY < 0
@@ -140,7 +149,7 @@ public class SubwayView extends View {
             if(subway != null){
                 for(SubwayLine line : subway.getLines()){
                     for(SubwayStation ss : line.stations) {
-                        if(ss.clickRect.contains((int) e.getX(), (int) e.getY())){
+                        if(ss.clickRect != null && ss.clickRect.contains((int) e.getX(), (int) e.getY())){
                             changeSelectedStation(ss);
                             break;
                         }
@@ -206,7 +215,7 @@ public class SubwayView extends View {
         this.width = w;
         this.height = h;
 
-        initViewProperty();
+        initViewProperty(false);
     }
 
     @Override
@@ -237,12 +246,22 @@ public class SubwayView extends View {
             canvas.drawPath(path, pPath);
         }
 
+//        DisplayMetrics displayMetrics = new DisplayMetrics();
+//        WindowManager manager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+//        manager.getDefaultDisplay().getMetrics(displayMetrics);
+//        int height = displayMetrics.heightPixels;
+//        int width = displayMetrics.widthPixels;
 
         for(SubwayLine line : subway.getLines()){
             for(int i = 0, num = line.stations.size() ; i < num; i++){
                 ss = line.stations.get(i);
                 getStationPoint(ss, thisPoint);
                 lastPoint.set(thisPoint.x, thisPoint.y);
+
+                if (thisPoint.x > canvas.getWidth() || thisPoint.y > canvas.getHeight() || thisPoint.x < 0 || thisPoint.y < 0) {
+                    Log.w("ERR", "Skip " + thisPoint.toString());
+                    continue;
+                }
 
                 //圆环
                 pStation.setColor(line.lineColor);
@@ -478,13 +497,15 @@ public class SubwayView extends View {
         point.y = (int) (height * 0.5f + dy + yOffset);
     }
 
-    private void initViewProperty(){
+    private void initViewProperty(boolean firstFlag){
         if(subway != null && width > 0 && height > 0){
-            curScale = (float)width / subway.canvasWidth;
-            MinScale = curScale;
-            if(curScale < 1f){
-                curScale = 1f;
+            if (!firstFlag) {
+                curScale = (float)width / subway.canvasWidth;
+                if(curScale < MinScale){
+                    curScale = MinScale;
+                }
             }
+
             scaleChanged();
 
             xOffset = 0;
@@ -500,20 +521,20 @@ public class SubwayView extends View {
         }
 
         //文字大小
-        textSizePx = (int) (PxUtil.dip2px(8)*curScale);
-        if(textSizePx < 5){
-            textSizePx = 5;
-        }else if(textSizePx > PxUtil.dip2px(12)){
-            textSizePx = PxUtil.dip2px(12);
+        textSizePx = (int) (TS*curScale);
+        if(textSizePx < 8){
+            textSizePx = 8;
+        }else if(textSizePx > TS_MAX){
+            textSizePx = TS_MAX;
         }
         pText.setTextSize(textSizePx);
 
         //线宽
-        lineWidth = (int) (PxUtil.dip2px(5)*curScale);
-        if(lineWidth < 3){
-            lineWidth = 3;
-        }else if(lineWidth > 9){
-            lineWidth = 9;
+        lineWidth = (int) (LW*curScale);
+        if(lineWidth < 6){
+            lineWidth = 6;
+        }else if(lineWidth > LW_MAX){
+            lineWidth = LW_MAX;
         }
         pPath.setStrokeWidth(lineWidth);
 
@@ -588,7 +609,7 @@ public class SubwayView extends View {
 
     public void setSubway(Subway subway) {
         this.subway = subway;
-        initViewProperty();
+        initViewProperty(true);
         postInvalidate();
     }
 

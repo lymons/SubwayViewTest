@@ -34,14 +34,16 @@ public class SubwayStation {
     @Override
     public String toString() {
         return "SubwayStation{" +
-                "stationName='" + stationName + '\'' +
-                ", stationId='" + stationId + '\'' +
-                ", crossLine='" + crossLine + '\'' +
-                ", lon=" + lon +
-                ", lat=" + lat +
-                ", textPosition='" + textPosition + '\'' +
-                ", textOrientation='" + textOrientation + '\'' +
-                '}';
+                "\n stationName='" + stationName + '\'' +
+                "\n stationId='" + stationId + '\'' +
+                "\n crossLine='" + crossLine + '\'' +
+                "\n lon=" + lon +
+                "\n lat=" + lat +
+                "\n x=" + x +
+                "\n y=" + y +
+                "\n textPosition='" + textPosition + '\'' +
+                "\n textOrientation='" + textOrientation + '\'' +
+                "\n}";
     }
 
 
